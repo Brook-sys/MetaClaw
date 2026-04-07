@@ -1,0 +1,17 @@
+services:
+  metaclaw:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.base
+    container_name: metaclaw
+    ports:
+      - "30000:30000"
+    volumes:
+      - metaclaw-config:/home/alpine/.metaclaw
+    environment:
+      - METACLAW_MODE=skills_only
+    restart: unless-stopped
+
+volumes:
+  metaclaw-config:
+    name: metaclaw-config

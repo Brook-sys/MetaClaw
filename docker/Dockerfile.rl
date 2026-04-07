@@ -1,0 +1,29 @@
+FROM python:3.11-slim
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd -r metaclaw && useradd -r -g metaclaw metaclaw
+
+WORKDIR /app
+
+COPY pyproject.toml .
+
+RUN pip install -e ".[rl,embedding]"
+
+RUN mkdir -p /home/alpine/.metaclaw && chown -R metaclaw:metaclaw /home/alpine/.metaclaw
+
+USER metaclaw
+
+EXPOSE 30000
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD python -c "import httpx; httpx.get('http://localhost:30000/health', timeout=5)" || exit 1
+
+CMD ["metaclaw", "start", "--mode", "rl"]

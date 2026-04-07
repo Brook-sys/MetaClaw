@@ -1,0 +1,20 @@
+services:
+  metaclaw:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.rl
+    container_name: metaclaw-rl
+    ports:
+      - "30000:30000"
+    volumes:
+      - metaclaw-config:/home/alpine/.metaclaw
+    environment:
+      - METACLAW_MODE=rl
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
