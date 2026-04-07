@@ -13,6 +13,7 @@ RUN groupadd -r metaclaw && useradd -r -g metaclaw metaclaw
 
 WORKDIR /app
 
+COPY metaclaw/ ./metaclaw/
 COPY pyproject.toml .
 
 RUN pip install -e ".[rl,embedding]"
