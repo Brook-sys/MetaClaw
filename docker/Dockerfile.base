@@ -11,7 +11,7 @@ WORKDIR /app
 
 COPY metaclaw/ ./metaclaw/
 COPY pyproject.toml .
-RUN pip install -e .
+RUN pip install -e ".[evolve]"
 
 RUN mkdir -p /home/alpine/.metaclaw && chown -R metaclaw:metaclaw /home/alpine/.metaclaw
 

@@ -16,7 +16,7 @@ WORKDIR /app
 COPY metaclaw/ ./metaclaw/
 COPY pyproject.toml .
 
-RUN pip install -e ".[rl,embedding]"
+RUN pip install -e ".[rl,embedding,evolve]"
 
 RUN mkdir -p /home/alpine/.metaclaw && chown -R metaclaw:metaclaw /home/alpine/.metaclaw
 
